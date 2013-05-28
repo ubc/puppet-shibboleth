@@ -8,11 +8,11 @@
 #
 # Limitations:
 # - currently RedHat/CentOS only.
-class shibboleth::sp {
+class shibboleth::sp inherits shibboleth::sp::params {
 
   yumrepo { 'security_shibboleth':
-    descr    => "Shibboleth-RHEL_${::lsbmajdistrelease}",
-    baseurl  => "http://download.opensuse.org/repositories/security://shibboleth/RHEL_${::lsbmajdistrelease}",
+    descr    => "Shibboleth-RHEL_${::os_maj_version}",
+    baseurl  => "http://download.opensuse.org/repositories/security://shibboleth/RHEL_${::os_maj_version}",
     gpgkey   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-shibboleth',
     enabled  => 1,
     gpgcheck => 1,
@@ -29,7 +29,7 @@ class shibboleth::sp {
   }
 
   exec { 'download shibboleth repo key':
-    command => 'curl -s http://download.opensuse.org/repositories/security:/shibboleth/RHEL_5/repodata/repomd.xml.key -o /etc/pki/rpm-gpg/RPM-GPG-KEY-shibboleth',
+    command => "/usr/bin/curl -s http://download.opensuse.org/repositories/security:/shibboleth/RHEL_${::os_maj_version}/repodata/repomd.xml.key -o /etc/pki/rpm-gpg/RPM-GPG-KEY-shibboleth",
     creates => '/etc/pki/rpm-gpg/RPM-GPG-KEY-shibboleth',
     require => File['/etc/pki/rpm-gpg/'],
   }
@@ -45,17 +45,41 @@ class shibboleth::sp {
     i386   => '/usr/lib/shibboleth/mod_shib_22.so',
   }
 
-  file { '/etc/httpd/mods-available/shib.load':
-    ensure  => present,
-    content => "# file managed by puppet\nLoadModule mod_shib ${shibpath}\n",
-  }
+#  file { '/etc/httpd/mods-available/shib.load':
+#    ensure  => present,
+#    content => "# file managed by puppet\nLoadModule mod_shib ${shibpath}\n",
+#  }
 
   file { '/etc/httpd/conf.d/shib.conf':
-    ensure  => absent,
+    ensure  => present,
     require => Package['shibboleth'],
-    notify  => Service['apache'],
+    notify  => Service['httpd'],
   }
 
+  file { '/etc/pki/rpm-gpg/':
+    ensure => directory
+  }
+
+  file { '/etc/shibboleth/shibboleth2.xml':
+    ensure => 'present',
+    content => template('shibboleth/shibboleth2.xml.erb'),
+    owner => 'root',
+    group => 'root',
+    mode => '0644',
+    require => [
+      Package['shibboleth'],
+    ],
+    notify => Service['shibd'],
+  }
+
+  file { '/etc/shibboleth/attribute-map.xml':
+    ensure => 'present',
+    source => 'puppet:///modules/shibboleth/attribute-map.xml', 
+    owner => 'root',
+    group => 'root',
+    mode => '0644',
+    notify  => Service['httpd'],
+  }
 # TODO
 ##
 ## Used for example logo and style sheet in error templates.

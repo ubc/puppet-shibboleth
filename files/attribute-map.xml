@@ -1,0 +1,140 @@
+<Attributes xmlns="urn:mace:shibboleth:2.0:attribute-map" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <!-- Attributes Map for UBCIT's Shibboleth Identity Provider v2.2 -->
+    <!-- Hari Mailvaganam v20111017T1747 -->
+    
+    <Attribute name="urn:mace:dir:attribute-def:eduPersonPrincipalName" id="eduPersonPrincipalName">
+        <AttributeDecoder xsi:type="ScopedAttributeDecoder"/>
+    </Attribute>
+    <Attribute name="urn:oid:1.3.6.1.4.1.5923.1.1.1.6" id="eduPersonPrincipalName">
+        <AttributeDecoder xsi:type="ScopedAttributeDecoder"/>
+    </Attribute>
+
+
+    <!-- ==eduPersonScopedAffiliation== -->    
+    <Attribute name="urn:mace:dir:attribute-def:eduPersonScopedAffiliation" id="eduPersonScopedAffiliation">
+        <AttributeDecoder xsi:type="ScopedAttributeDecoder" caseSensitive="false"/>
+    </Attribute>
+    <Attribute name="urn:oid:1.3.6.1.4.1.5923.1.1.1.9" id="eduPersonScopedAffiliation">
+        <AttributeDecoder xsi:type="ScopedAttributeDecoder" caseSensitive="false"/>
+    </Attribute>
+
+
+    <!-- ==puid== -->
+    <Attribute name="urn:mace:dir:attribute-def:puid" id="puid">
+        <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+    </Attribute>
+    <Attribute name="urn:mace:dir:attribute-def:puid" id="puid">
+        <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+    </Attribute>
+
+
+    <!-- ==cwlLoginName== -->
+    <Attribute name="urn:mace:dir:attribute-def:cwlLoginName" id="cwlLoginName">
+        <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+    </Attribute>
+    <Attribute name="urn:mace:dir:attribute-def:cwlLoginName" id="cwlLoginName">
+        <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+    </Attribute>
+
+
+    <!-- ==eduPersonAffiliation== -->    
+    <Attribute name="urn:mace:dir:attribute-def:eduPersonAffiliation" id="eduPersonAffiliation">
+        <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+    </Attribute>
+    <Attribute name="urn:oid:1.3.6.1.4.1.5923.1.1.1.1" id="eduPersonAffiliation">
+        <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+    </Attribute>
+
+
+    <!-- ==eduPersonEntitlement== -->
+    <Attribute name="urn:mace:dir:attribute-def:eduPersonEntitlement" id="eduPersonEntitlement">
+         <AttributeDecoder xsi:type="StringAttributeDecoder"/>
+    </Attribute>
+    <Attribute name="urn:oid:1.3.6.1.4.1.5923.1.1.1.7" id="eduPersonEntitlement">
+         <AttributeDecoder xsi:type="StringAttributeDecoder"/>
+    </Attribute>
+
+    
+    <!-- ==employeeNumber== -->
+    <Attribute name="urn:mace:dir:attribute-def:employeeNumber" id="employeeNumber">
+        <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+    </Attribute>
+    <Attribute name="urn:oid:2.16.840.1.113730.3.1.3" id="employeeNumber">
+        <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+    </Attribute>
+
+
+    <!-- ==studentNumber== -->
+    <Attribute name="urn:mace:dir:attribute-def:studentNumber" id="studentNumber">
+        <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+    </Attribute>
+    <Attribute name="urn:mace:dir:attribute-def:studentNumber" id="studentNumber">
+        <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+    </Attribute>
+     
+
+    <!-- ==isMemberOf== -->
+    <Attribute name="urn:mace:dir:attribute-def:isMemberOf" id="isMemberOf">
+        <AttributeDecoder xsi:type="StringAttributeDecoder"/>
+    </Attribute>
+    <Attribute name="urn:mace:dir:attribute-def:isMemberOf" id="isMemberOf">
+        <AttributeDecoder xsi:type="StringAttributeDecoder"/>
+    </Attribute>
+
+
+    <!-- ==siscId== -->
+    <Attribute name="urn:mace:dir:attribute-def:siscId" id="siscId">
+        <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+    </Attribute>
+    <Attribute name="urn:mace:dir:attribute-def:siscId" id="siscId">
+        <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+    </Attribute>
+
+
+    <!-- ==givenName== -->
+    <Attribute name="urn:mace:dir:attribute-def:givenName" id="givenName">
+         <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="true"/>
+    </Attribute>
+    <Attribute name="urn:oid:2.5.4.42" id="givenName">
+         <AttributeDecoder xsi:type="StringAttributeDecoder"/>
+    </Attribute>
+
+
+     <!-- ==sn== -->
+    <Attribute name="urn:mace:dir:attribute-def:givenName" id="sn">
+         <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="true"/>
+    </Attribute>
+    <Attribute name="urn:oid:2.5.4.4" id="sn">
+         <AttributeDecoder xsi:type="StringAttributeDecoder"/>
+    </Attribute>
+
+
+    <!-- ==eduPersonTargetedId== -->    
+    <!-- A persistent id attribute that supports personalized anonymous access. -->
+    
+    <!-- First, the deprecated version, decoded as a scoped string: -->
+    <!--
+    <Attribute name="urn:mace:dir:attribute-def:eduPersonTargetedID" id="targeted-id">
+        <AttributeDecoder xsi:type="ScopedAttributeDecoder"/>
+        <AttributeDecoder xsi:type="NameIDFromScopedAttributeDecoder" formatter="$NameQualifier!$SPNameQualifier!$Name" defaultQualifiers="true"/> 
+    </Attribute>
+    -->
+    
+    <!-- Second, an alternate decoder that will turn the deprecated form into the newer form. -->
+    <Attribute name="urn:mace:dir:attribute-def:eduPersonTargetedID" id="eduPersonTargetedId">
+        <AttributeDecoder xsi:type="NameIDFromScopedAttributeDecoder" formatter="$NameQualifier!$SPNameQualifier!$Name" defaultQualifiers="true"/>
+    </Attribute>
+    
+    <!-- Third, the new version (note the OID-style name): -->
+    <Attribute name="urn:oid:1.3.6.1.4.1.5923.1.1.1.10" id="eduPersonTargetedId">
+        <AttributeDecoder xsi:type="NameIDAttributeDecoder" formatter="$NameQualifier!$SPNameQualifier!$Name" defaultQualifiers="true"/>
+    </Attribute>
+
+    <!-- Fourth, the SAML 2.0 NameID Format: -->
+    <Attribute name="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent" id="eduPersonTargetedId">
+        <AttributeDecoder xsi:type="NameIDAttributeDecoder" formatter="$NameQualifier!$SPNameQualifier!$Name" defaultQualifiers="true"/>
+    </Attribute>
+    
+   
+</Attributes>
