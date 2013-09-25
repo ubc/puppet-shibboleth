@@ -3,4 +3,5 @@ class shibboleth::sp::params {
   $home_url = "https://$fqdn/"
   $support_email = 'do-not-reply@example.com'
   $remote_user = 'eppn'
+  $force_authn = true
 }
