@@ -8,7 +8,11 @@
 #
 # Limitations:
 # - currently RedHat/CentOS only.
-class shibboleth::sp inherits shibboleth::sp::params {
+class shibboleth::sp (
+    $idp_metadata_provider = undef,
+    $idp_entity_id = undef,
+    $force_authn = shibboleth::sp::params::force_authn,
+) inherits shibboleth::sp::params {
 
   yumrepo { 'security_shibboleth':
     descr    => "Shibboleth-RHEL_${::os_maj_version}",

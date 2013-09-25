@@ -113,9 +113,9 @@
             <!-- Default example directs to a specific IdP's SSO service (favoring SAML 2 over Shib 1). -->
  
             <SessionInitiator type="Chaining" Location="/Login" isDefault="true" id="Intranet"
-                    relayState="cookie" entityID="https://shibboleth2.id.ubc.ca/idp/shibboleth"
+                    relayState="cookie" entityID="<%= @idp_entity_id %>"
                     acsByIndex="false">
-                <SessionInitiator type="SAML2" acsIndex="1" forceAuthn="true"  template="bindingTemplate.html"/>
+                <SessionInitiator type="SAML2" acsIndex="1" forceAuthn="<%= @force_authn %>"  template="bindingTemplate.html"/>
                 <SessionInitiator type="Shib1" acsIndex="5"/>
             </SessionInitiator>
 
@@ -208,7 +208,7 @@
 	<!-- IMPORTANT: Create separate metadata for other IdP environments -->
 	<!-- IMPORTANT: UBC-IT reserves right to make metadata changes when required --> 
         <MetadataProvider type="XML" 
-                          url="https://shibboleth2.id.ubc.ca/metadata/ubcit-idp-metadata.xml"
+                          url="<%= @idp_metadata_provider %>"
                           backingFilePath="/etc/shibboleth/ubcit-idp-metadata.xml"
                           reloadInterval="86400" />
 
