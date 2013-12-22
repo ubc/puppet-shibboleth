@@ -11,7 +11,7 @@
 class shibboleth::sp (
     $idp_metadata_provider = undef,
     $idp_entity_id = undef,
-    $force_authn = shibboleth::sp::params::force_authn,
+    $force_authn = $shibboleth::sp::params::force_authn,
 ) inherits shibboleth::sp::params {
 
   yumrepo { 'security_shibboleth':
