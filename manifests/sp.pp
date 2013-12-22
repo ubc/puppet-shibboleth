@@ -56,6 +56,7 @@ class shibboleth::sp (
 
   file { '/etc/httpd/conf.d/shib.conf':
     ensure  => present,
+    source  => 'puppet:///modules/shibboleth/shib.conf', 
     require => Package['shibboleth'],
     notify  => Service['httpd'],
   }
