@@ -11,7 +11,14 @@
 class shibboleth::sp (
     $idp_metadata_provider = undef,
     $idp_entity_id = undef,
+    $entity_id = $shibboleth::sp::params::entity_id,
+    $home_url = $shibboleth::sp::params::home_url,
+    $remote_user = $shibboleth::sp::params::remote_user,
+    $support_email = $shibboleth::sp::params::support_email,
     $force_authn = $shibboleth::sp::params::force_authn,
+    $apache_hostname = $fqdn,
+    $sp_cert = undef,
+    $sp_key = undef,
 ) inherits shibboleth::sp::params {
 
   yumrepo { 'security_shibboleth':
@@ -57,6 +64,8 @@ class shibboleth::sp (
   file { '/etc/httpd/conf.d/shib.conf':
     ensure  => present,
     source  => 'puppet:///modules/shibboleth/shib.conf', 
+    owner => 'root',
+    group => 'root',
     require => Package['shibboleth'],
     notify  => Service['httpd'],
   }
@@ -96,5 +105,32 @@ class shibboleth::sp (
 #  Alias /shibboleth-sp/main.css /usr/share/doc/shibboleth/main.css
 #  Alias /shibboleth-sp/logo.jpg /usr/share/doc/shibboleth/logo.jpg
 #</IfModule>
+  
+  if $sp_cert {
+    file {'/etc/shibboleth/sp-cert.pem':
+      ensure => present,
+      source => $sp_cert,
+      mode => 644,
+      owner => 'shibd',
+      group => 'shibd',
+      require => [
+        Package['shibboleth'],
+      ],
+      notify => Service['shibd'],
+    }
+  }
 
+  if $sp_key {
+    file {'/etc/shibboleth/sp-key.pem':
+      ensure => present,
+      source => $sp_key,
+      mode => 600,
+      owner => 'shibd',
+      group => 'shibd',
+      require => [
+        Package['shibboleth'],
+      ],
+      notify => Service['shibd'],
+    }
+  }
 }

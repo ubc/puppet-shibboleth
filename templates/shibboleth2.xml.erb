@@ -46,7 +46,7 @@
             below.
             -->
 
-            <Host name="<%= @fqdn %>"
+            <Host name="<%= @apache_hostname %>"
                   applicationId="<%= @fqdn %>" 
                   authType="shibboleth" 
                   requireSession="true" 
@@ -100,7 +100,7 @@
         impact on the security of the SP. Stealing cookies/sessions is much easier with this disabled.
         -->
         <Sessions lifetime="7200" timeout="3600" checkAddress="false" consistentAddress="true"
-            handlerURL="/Shibboleth.sso" handlerSSL="true"
+            handlerURL="/Shibboleth.sso" handlerSSL="false"
             exportLocation="http://localhost/Shibboleth.sso/GetAssertion"
             idpHistory="true" idpHistoryDays="7">
             
@@ -209,7 +209,7 @@
 	<!-- IMPORTANT: UBC-IT reserves right to make metadata changes when required --> 
         <MetadataProvider type="XML" 
                           url="<%= @idp_metadata_provider %>"
-                          backingFilePath="/etc/shibboleth/ubcit-idp-metadata.xml"
+                          backingFilePath="/var/cache/shibboleth/ubcit-idp-metadata.xml"
                           reloadInterval="86400" />
 
         <!-- Chain the two built-in trust engines together. -->
