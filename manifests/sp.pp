@@ -19,6 +19,7 @@ class shibboleth::sp (
     $apache_hostname = $fqdn,
     $sp_cert = undef,
     $sp_key = undef,
+    $stack_size = '2048',
     $protected_resources = {},
 ) inherits shibboleth::sp::params {
 

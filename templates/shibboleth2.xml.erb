@@ -17,7 +17,7 @@
 
     <InProcess logger="/etc/shibboleth/native.logger" />
 
-    <UnixListener address="/var/run/shibboleth/shibd.sock" />
+    <UnixListener address="/var/run/shibboleth/shibd.sock" stackSize="<%= @stack_size %>"/>
     <!-- This set of components stores sessions and other persistent data in daemon memory. -->
     <StorageService type="Memory" id="mem" cleanupInterval="900"/>
     <SessionCache type="StorageService" StorageService="mem" cacheTimeout="3600" inprocTimeout="900" cleanupInterval="900"/>
