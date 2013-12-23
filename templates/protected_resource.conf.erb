@@ -1,0 +1,5 @@
+<LocationMatch <%= @location %>>
+  AuthType shibboleth
+  ShibRequestSetting requireSession <%= @require_session %> 
+  require <%= @location_require %>
+</LocationMatch>

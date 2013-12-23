@@ -19,6 +19,7 @@ class shibboleth::sp (
     $apache_hostname = $fqdn,
     $sp_cert = undef,
     $sp_key = undef,
+    $protected_resources = {},
 ) inherits shibboleth::sp::params {
 
   yumrepo { 'security_shibboleth':
@@ -61,14 +62,34 @@ class shibboleth::sp (
 #    content => "# file managed by puppet\nLoadModule mod_shib ${shibpath}\n",
 #  }
 
-  file { '/etc/httpd/conf.d/shib.conf':
-    ensure  => present,
-    source  => 'puppet:///modules/shibboleth/shib.conf', 
-    owner => 'root',
-    group => 'root',
+  $shib_conf = '/etc/httpd/conf.d/shib.conf'
+  concat{$shib_conf:
+    owner => root,
+    group => root,
+    mode  => '0644',
     require => Package['shibboleth'],
     notify  => Service['httpd'],
   }
+
+  concat::fragment{"shib_conf_header":
+    target => $shib_conf,
+    source  => 'puppet:///modules/shibboleth/shib.conf', 
+    order   => 01,
+  }
+
+  if $protected_resources {
+    $defaults = { 'shib_conf' => $shib_conf } 
+    create_resources('shibboleth::sp::resource', $protected_resources, $defaults)
+  }
+
+  #file { '/etc/httpd/conf.d/shib.conf':
+  #  ensure  => present,
+  #  source  => 'puppet:///modules/shibboleth/shib.conf', 
+  #  owner => 'root',
+  #  group => 'root',
+  #  require => Package['shibboleth'],
+  #  notify  => Service['httpd'],
+  #}
 
   file { '/etc/pki/rpm-gpg/':
     ensure => directory
