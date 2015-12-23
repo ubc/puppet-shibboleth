@@ -24,8 +24,8 @@ class shibboleth::sp (
 ) inherits shibboleth::sp::params {
 
   yumrepo { 'security_shibboleth':
-    descr    => "Shibboleth-RHEL_${::os_maj_version}",
-    baseurl  => "http://download.opensuse.org/repositories/security://shibboleth/RHEL_${::os_maj_version}",
+    descr    => "Shibboleth-RHEL_${::operatingsystemmajrelease}",
+    baseurl  => "http://download.opensuse.org/repositories/security://shibboleth/RHEL_${::operatingsystemmajrelease}",
     gpgkey   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-shibboleth',
     enabled  => 1,
     gpgcheck => 1,
@@ -35,7 +35,7 @@ class shibboleth::sp (
   # ensure file is managed in case we want to purge /etc/yum.repos.d/
   # http://projects.puppetlabs.com/issues/3152
   file { '/etc/yum.repos.d/security_shibboleth.repo':
-    ensure  => present,
+    ensure  => file,
     mode    => '0644',
     owner   => 'root',
     require => Yumrepo['security_shibboleth'],
@@ -45,6 +45,7 @@ class shibboleth::sp (
     command => "/usr/bin/curl -s http://download.opensuse.org/repositories/security:/shibboleth/RHEL_${::os_maj_version}/repodata/repomd.xml.key -o /etc/pki/rpm-gpg/RPM-GPG-KEY-shibboleth",
     creates => '/etc/pki/rpm-gpg/RPM-GPG-KEY-shibboleth',
     require => File['/etc/pki/rpm-gpg/'],
+    path    => $::path,
   }
 
   package { 'shibboleth':
@@ -54,14 +55,13 @@ class shibboleth::sp (
   }
 
   $shibpath = $::architecture ? {
-    x86_64 => '/usr/lib64/shibboleth/mod_shib_22.so',
-    i386   => '/usr/lib/shibboleth/mod_shib_22.so',
+    'x86_64' => '/usr/lib64/shibboleth/mod_shib_22.so',
+    'i386'   => '/usr/lib/shibboleth/mod_shib_22.so',
   }
 
 #  file { '/etc/httpd/mods-available/shib.load':
 #    ensure  => present,
 #    content => "# file managed by puppet\nLoadModule mod_shib ${shibpath}\n",
-#  }
 
   $shib_conf = '/etc/httpd/conf.d/shib.conf'
   concat{$shib_conf:

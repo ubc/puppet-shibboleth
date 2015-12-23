@@ -5,7 +5,7 @@
 # Shibboleth itself gets installed in /opt/shibboleth-idp.
 #
 # Class parameters:
-# - *shibidp_version*: shibboleth version, defaults to 2.1.5
+# - *shibidp_version*: shibboleth version,
 # - *shibidp_hostname*: the DNS name the service will get accessed through.
 #   Defaults to localhost.
 # - *shibidp_keypass*: the passphrase of the generated certificate.
@@ -35,7 +35,7 @@ class shibboleth::idp(
 
   # see http://ant.apache.org/faq.html#passing-cli-args
   exec { 'install shibboleth idp':
-    cwd         => "${shibidp_installdir}",
+    cwd         => $shibidp_installdir,
     command     => "${shibidp_installdir}/install.sh",
     provider    => shell,
     environment => [
@@ -80,6 +80,9 @@ class shibboleth::idp(
     file { "/srv/tomcat/${shibidp_tomcat}/webapps/idp.war":
       source  => "file:///${shibidp_home}/war/idp.war",
       notify  => Service["tomcat-${shibidp_tomcat}"],
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
       require => [
         File["/srv/tomcat/${shibidp_tomcat}/webapps/"],
         Exec['install shibboleth idp'],
@@ -89,15 +92,27 @@ class shibboleth::idp(
     # Copy library shipped with source to tomcat dir.
     # Don't forget to point the common.loader variable to this directory in
     # your catalina.properties file !
-    file { "/srv/tomcat/${shibidp_tomcat}/private/endorsed/":
-      ensure  => directory,
-      source  => "file:///${shibidp_installdir}/endorsed/",
-      recurse => true,
-      require => [
-        Archive::Tar_gz["${shibidp_installdir}/.installed"],
-        File['/srv/tomcat/shibb-idp/private/'],
-      ],
-      notify  => Service["tomcat-${shibidp_tomcat}"],
+    # As of 2.4.3, this directory doesn't exits anymore.
+    case $shibidp_version {
+
+      default: { }
+
+      /^(2\.([0-3]\.\d)|2\.4\.[0-2])$/: {
+        file { "/srv/tomcat/${shibidp_tomcat}/private/endorsed/":
+          ensure  => directory,
+          source  => "file:///${shibidp_installdir}/endorsed/",
+          recurse => true,
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0644',
+          require => [
+            Archive::Tar_gz["${shibidp_installdir}/.installed"],
+            File['/srv/tomcat/shibb-idp/private/'],
+          ],
+          notify  => Service["tomcat-${shibidp_tomcat}"],
+        }
+      }
+
     }
 
   }
